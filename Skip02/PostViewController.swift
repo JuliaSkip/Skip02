@@ -108,7 +108,9 @@ class PostViewController: UIViewController {
             rating.text = String(result.ups + result.downs)
             commentsCount.text = String(result.numComments)
             
-            bookmark.setImage(UIImage(systemName: result.saved ? "bookmark.fill" : "bookmark"), for: .normal)
+            let image = UIImage(systemName: result.saved ? "bookmark.fill" : "bookmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 15, weight: .bold))
+
+            bookmark.setImage(image, for: .normal)
             bookmark.tintColor = .label
             
         }
