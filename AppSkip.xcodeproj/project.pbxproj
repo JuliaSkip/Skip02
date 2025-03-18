@@ -11,26 +11,26 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A3E24F902D7F24C10050781D /* Skip02.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Skip02.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3E24F902D7F24C10050781D /* AppSkip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppSkip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		A3E24FA22D7F24C30050781D /* Exceptions for "Skip02" folder in "Skip02" target */ = {
+		A3E24FA22D7F24C30050781D /* Exceptions for "AppSkip" folder in "AppSkip" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = A3E24F8F2D7F24C10050781D /* Skip02 */;
+			target = A3E24F8F2D7F24C10050781D /* AppSkip */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A3E24F922D7F24C10050781D /* Skip02 */ = {
+		A3E24F922D7F24C10050781D /* AppSkip */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A3E24FA22D7F24C30050781D /* Exceptions for "Skip02" folder in "Skip02" target */,
+				A3E24FA22D7F24C30050781D /* Exceptions for "AppSkip" folder in "AppSkip" target */,
 			);
-			path = Skip02;
+			path = AppSkip;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -50,7 +50,7 @@
 		A3E24F872D7F24C10050781D = {
 			isa = PBXGroup;
 			children = (
-				A3E24F922D7F24C10050781D /* Skip02 */,
+				A3E24F922D7F24C10050781D /* AppSkip */,
 				A3E24F912D7F24C10050781D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -58,7 +58,7 @@
 		A3E24F912D7F24C10050781D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A3E24F902D7F24C10050781D /* Skip02.app */,
+				A3E24F902D7F24C10050781D /* AppSkip.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,9 +66,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A3E24F8F2D7F24C10050781D /* Skip02 */ = {
+		A3E24F8F2D7F24C10050781D /* AppSkip */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A3E24FA32D7F24C30050781D /* Build configuration list for PBXNativeTarget "Skip02" */;
+			buildConfigurationList = A3E24FA32D7F24C30050781D /* Build configuration list for PBXNativeTarget "AppSkip" */;
 			buildPhases = (
 				A3E24F8C2D7F24C10050781D /* Sources */,
 				A3E24F8D2D7F24C10050781D /* Frameworks */,
@@ -79,14 +79,14 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A3E24F922D7F24C10050781D /* Skip02 */,
+				A3E24F922D7F24C10050781D /* AppSkip */,
 			);
-			name = Skip02;
+			name = AppSkip;
 			packageProductDependencies = (
 				A3E24FA92D7F5AD90050781D /* Kingfisher */,
 			);
 			productName = Skip02;
-			productReference = A3E24F902D7F24C10050781D /* Skip02.app */;
+			productReference = A3E24F902D7F24C10050781D /* AppSkip.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -104,7 +104,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A3E24F8B2D7F24C10050781D /* Build configuration list for PBXProject "Skip02" */;
+			buildConfigurationList = A3E24F8B2D7F24C10050781D /* Build configuration list for PBXProject "AppSkip" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -121,7 +121,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A3E24F8F2D7F24C10050781D /* Skip02 */,
+				A3E24F8F2D7F24C10050781D /* AppSkip */,
 			);
 		};
 /* End PBXProject section */
@@ -156,7 +156,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D85QWSUNYA;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Skip02/Info.plist;
+				INFOPLIST_FILE = AppSkip/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -167,7 +167,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ua.edu.ukma.skip.Skip02;
+				PRODUCT_BUNDLE_IDENTIFIER = ua.edu.ukma.skip.AppSkip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -186,7 +186,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D85QWSUNYA;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Skip02/Info.plist;
+				INFOPLIST_FILE = AppSkip/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -197,7 +197,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ua.edu.ukma.skip.Skip02;
+				PRODUCT_BUNDLE_IDENTIFIER = ua.edu.ukma.skip.AppSkip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -329,7 +329,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A3E24F8B2D7F24C10050781D /* Build configuration list for PBXProject "Skip02" */ = {
+		A3E24F8B2D7F24C10050781D /* Build configuration list for PBXProject "AppSkip" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A3E24FA62D7F24C30050781D /* Debug */,
@@ -338,7 +338,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A3E24FA32D7F24C30050781D /* Build configuration list for PBXNativeTarget "Skip02" */ = {
+		A3E24FA32D7F24C30050781D /* Build configuration list for PBXNativeTarget "AppSkip" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A3E24FA42D7F24C30050781D /* Debug */,
