@@ -15,18 +15,21 @@ class PostListViewController: UIViewController {
         static let goToPostDetailsIdentifier = "go_to_post_details"
     }
     
-    @IBOutlet weak var postTable: UITableView!
+    @IBOutlet private weak var postTable: UITableView!
+    @IBOutlet private weak var subreddit: UILabel!
     
     private var posts:[DataFetcher.PostData] = []
     private var lastSelectedPost:DataFetcher.PostData?
     private var after: String?
     private var isFetchingData = false
     private let portionSize: Int = 20
+    private let subRedditText = "ios"
         
     
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchData()
+        subreddit.text = "/r/\(subRedditText)"
     }
     
     func fetchData(){
@@ -34,7 +37,7 @@ class PostListViewController: UIViewController {
         isFetchingData = true
         let dataFetcher = DataFetcher()
         Task {
-            if let result = await dataFetcher.fetchPosts(subreddit:"ios", limit: self.portionSize, after: self.after){
+            if let result = await dataFetcher.fetchPosts(subreddit:subRedditText, limit: self.portionSize, after: self.after){
                 self.posts.append(contentsOf: result)
                 self.after = result.last?.after
                 self.postTable.reloadData()
