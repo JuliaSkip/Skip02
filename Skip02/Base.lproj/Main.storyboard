@@ -213,7 +213,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="postView" destination="kh8-eW-NKF" id="kBV-5M-2Lq"/>
-                                            <segue destination="5w8-uZ-fnl" kind="show" identifier="go_to_post_details" id="XJ0-4F-wfP"/>
+                                            <segue destination="5w8-uZ-fnl" kind="show" identifier="go_to_post_details" trigger="accessoryAction" id="B4x-83-w71"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -291,25 +291,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tsc-Zl-1so" customClass="PostView" customModule="Skip02" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="msK-BP-8Il" customClass="PostView" customModule="Skip02" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="103" width="393" height="300"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="QKY-Vk-JiO"/>
+                                    <constraint firstAttribute="height" constant="300" id="OfK-tC-WvT"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="0wF-Io-Via"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Tsc-Zl-1so" firstAttribute="top" secondItem="0wF-Io-Via" secondAttribute="top" id="gjo-29-KpP"/>
-                            <constraint firstItem="0wF-Io-Via" firstAttribute="trailing" secondItem="Tsc-Zl-1so" secondAttribute="trailing" id="hZz-zX-TeB"/>
-                            <constraint firstItem="Tsc-Zl-1so" firstAttribute="leading" secondItem="0wF-Io-Via" secondAttribute="leading" id="uV0-h9-5v4"/>
+                            <constraint firstItem="msK-BP-8Il" firstAttribute="top" secondItem="0wF-Io-Via" secondAttribute="top" id="Wea-AQ-0rY"/>
+                            <constraint firstItem="0wF-Io-Via" firstAttribute="trailing" secondItem="msK-BP-8Il" secondAttribute="trailing" id="X51-6l-fqN"/>
+                            <constraint firstItem="msK-BP-8Il" firstAttribute="leading" secondItem="0wF-Io-Via" secondAttribute="leading" id="tnF-GT-WHR"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zzT-vb-aWS"/>
                     <connections>
-                        <outlet property="postDetails" destination="Tsc-Zl-1so" id="jNM-18-h2I"/>
+                        <outlet property="postView" destination="msK-BP-8Il" id="75F-5H-gqh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jCz-e1-UNm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

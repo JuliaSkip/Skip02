@@ -32,9 +32,8 @@ class PostListViewController: UIViewController {
     func fetchData(){
         guard !isFetchingData else { return }
         isFetchingData = true
-        
+        let dataFetcher = DataFetcher()
         Task {
-            let dataFetcher = DataFetcher()
             if let result = await dataFetcher.fetchPosts(subreddit:"ios", limit: self.portionSize, after: self.after){
                 self.posts.append(contentsOf: result)
                 self.after = result.last?.after
@@ -46,12 +45,15 @@ class PostListViewController: UIViewController {
 
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        guard segue.identifier == Const.goToPostDetailsIdentifier else { return }
-        let next = segue.destination as! PostDetailsViewController
-        DispatchQueue.main.async {
-            next.config(with: self.lastSelectedPost!)
+        switch segue.identifier{
+        case Const.goToPostDetailsIdentifier:
+            let nextVC = segue.destination as! PostDetailsViewController
+            DispatchQueue.main.async {
+                nextVC.config(with: self.lastSelectedPost!)
+            }
+        default: break
         }
     }
 }

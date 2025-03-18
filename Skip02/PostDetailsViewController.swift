@@ -9,10 +9,12 @@ import UIKit
 
 class PostDetailsViewController: UIViewController {
     
-    
-    @IBOutlet weak var postDetails: PostView!
+    @IBOutlet weak var postView: PostView!
     
     func config(with post: DataFetcher.PostData){
-        self.postDetails.config(result: post)
+        if let postView {
+            postView.config(result: post)
+            return
+        }
     }
 }
