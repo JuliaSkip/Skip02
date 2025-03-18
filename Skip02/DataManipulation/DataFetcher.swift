@@ -55,16 +55,10 @@ class DataFetcher {
     
     private func fetchUrl(from: String, params: Parameters) async throws -> (posts: [RedditData?], after: String?){
         let fullUrl = from + "?" + params.getParams()
-        print(fullUrl)
-
         guard let url = URL(string: fullUrl) else { return ([], nil)}
-        
         let (data, _) = try await URLSession.shared.data(from: url)
-    
         let decodedResponse = try JSONDecoder().decode(RedditResponse.self, from: data)
-        
         let posts = decodedResponse.data.children.map { $0.data }
-               
         return (posts, decodedResponse.data.after)
     }
 
