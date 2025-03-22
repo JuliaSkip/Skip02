@@ -10,6 +10,8 @@ import Foundation
 
 class DataFetcher {
     
+    private let fileName = "posts.json"
+    
     private struct Parameters {
         private var parameters: [String: String] = [:]
         
@@ -42,6 +44,7 @@ class DataFetcher {
         let downs: Int
         let created_utc: Double
         let domain: String
+        let permalink: String
     }
     struct Preview: Decodable {
         let images: [Image]
@@ -73,7 +76,7 @@ class DataFetcher {
         return try await fetchUrl(from: urlString, params: parameters)
     }
     
-    struct PostData{
+    struct PostData:Codable, Equatable{
       let author: String
       let title: String
       let numComments: Int
@@ -82,9 +85,16 @@ class DataFetcher {
       let createdUTC: String
       let imageUrl: String?
       let domain: String
-      let saved: Bool
+      var isSaved: Bool
       let after: String?
+      let url: String
+        
+        static func == (lhs: PostData, rhs: PostData) -> Bool {
+            lhs.url == rhs.url
+        }
     }
+    
+    
     
     func fetchPosts(subreddit:String, limit: Int, after: String?) async -> [PostData]? {
         
@@ -107,8 +117,9 @@ class DataFetcher {
                     createdUTC: formattedDate,
                     imageUrl: imageUrl,
                     domain: post.domain,
-                    saved: Bool.random(),
-                    after: afterToken
+                    isSaved: false,
+                    after: afterToken,
+                    url: "https://www.reddit.com" + post.permalink
                 )
             }
             
@@ -120,6 +131,19 @@ class DataFetcher {
         
         return nil
     }
+    
+    func loadPosts() -> [DataFetcher.PostData] {
+        guard let filePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName),
+        let data = try? Data(contentsOf: filePath) else { return [] }
+            
+        do {
+            return try JSONDecoder().decode([DataFetcher.PostData].self, from: data)
+        } catch {
+            print("Error decoding JSON: \(error)")
+            return []
+        }
+    }
+    
     
     
     private func formatDate(_ date: Double) -> String {

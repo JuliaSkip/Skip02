@@ -24,30 +24,62 @@ class PostListViewController: UIViewController {
     private var isFetchingData = false
     private let portionSize: Int = 20
     private let subRedditText = "ios"
+    private let dataFetcher = DataFetcher()
+
         
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateSavedPost(_:)), name: NSNotification.Name("PostUpdated"), object: nil)
+
         fetchData()
         subreddit.text = "/r/\(subRedditText)"
     }
     
+    @objc
+    func updateSavedPost(_ notification: Notification) {
+        guard let updatedPost = notification.userInfo?["post"] as? DataFetcher.PostData else { return }
+        
+        if let index = posts.firstIndex(where: { $0.url == updatedPost.url }) {
+            posts[index].isSaved = updatedPost.isSaved
+            postTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+        }
+    }
+
+    
     func fetchData(){
         guard !isFetchingData else { return }
         isFetchingData = true
-        let dataFetcher = DataFetcher()
+        let loadedPosts = dataFetcher.loadPosts()
+        
         Task {
             if let result = await dataFetcher.fetchPosts(subreddit:subRedditText, limit: self.portionSize, after: self.after){
-                self.posts.append(contentsOf: result)
-                self.after = result.last?.after
+                let resultToSave = result.map { post -> DataFetcher.PostData in
+                    let isAlreadySaved = loadedPosts.contains { $0 == post }
+                    return DataFetcher.PostData(
+                        author: post.author,
+                        title: post.title,
+                        numComments: post.numComments,
+                        ups: post.ups,
+                        downs: post.downs,
+                        createdUTC: post.createdUTC,
+                        imageUrl: post.imageUrl,
+                        domain: post.domain,
+                        isSaved: isAlreadySaved,
+                        after: post.after,
+                        url: post.url
+                    )
+                }
+                
+                self.posts.append(contentsOf: resultToSave)
+                self.after = resultToSave.last?.after
                 self.postTable.reloadData()
             }
-       
+            
             self.isFetchingData = false
         }
 
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier{

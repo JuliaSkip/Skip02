@@ -15,6 +15,50 @@ class PostView: UIView {
     @IBOutlet private weak var commentsCount: UILabel!
     @IBOutlet private weak var postImage: UIImageView!
     @IBOutlet private weak var username: UILabel!
+    private var currentPost:DataFetcher.PostData?
+    private let fileName = "posts.json"
+    private let dataFetcher = DataFetcher()
+
+    
+    
+    @IBAction func saveButton(_ sender: UIButton) {
+        guard var post = self.currentPost else { return }
+        
+        var loadedPosts = dataFetcher.loadPosts()
+        
+        if let index = loadedPosts.firstIndex(where: { $0 == post }) {
+            loadedPosts.remove(at: index)
+            post.isSaved = false
+           
+        } else {
+            loadedPosts.append(post)
+            post.isSaved = true
+        }
+                
+        do {
+            let data = try JSONEncoder().encode(loadedPosts)
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileURL = documentsDirectory.appendingPathComponent(fileName)
+                try data.write(to: fileURL)
+            
+            let image = UIImage(systemName: post.isSaved ? "bookmark.fill" : "bookmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 15, weight: .bold))
+            self.saveButton.setImage(image, for: .normal)
+            self.saveButton.tintColor = .label
+            
+            NotificationCenter.default.post(name: NSNotification.Name("PostUpdated"), object: nil, userInfo: ["post": post])
+
+        } catch {
+            print("Error saving JSON: \(error)")
+        }
+
+    }
+    
+    @IBAction func shareButton(_ sender: UIButton) {
+        guard let viewController = self.findViewController() else { return }
+        guard let post = self.currentPost else { return }
+        let activityVC = UIActivityViewController(activityItems: [post.url], applicationActivities: nil)
+        viewController.present(activityVC, animated: true, completion: nil)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,6 +80,8 @@ class PostView: UIView {
     }
     
     func config(result: DataFetcher.PostData) {
+        
+        self.currentPost = result
                         
         if let imageUrlString = result.imageUrl, let formattedUrl = URL(string: imageUrlString.replacingOccurrences(of: "&amp;", with: "&")) {
             self.postImage.kf.setImage(with: formattedUrl)
@@ -48,7 +94,7 @@ class PostView: UIView {
         self.rating.text = String(result.ups + result.downs)
         self.commentsCount.text = String(result.numComments)
             
-        let image = UIImage(systemName: result.saved ? "bookmark.fill" : "bookmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 15, weight: .bold))
+        let image = UIImage(systemName: result.isSaved ? "bookmark.fill" : "bookmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 15, weight: .bold))
         self.saveButton.setImage(image, for: .normal)
         self.saveButton.tintColor = .label
     }
@@ -64,5 +110,17 @@ extension UIView
         NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: container, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: container, attribute: .top, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: container, attribute: .bottom, multiplier: 1.0, constant: 0).isActive = true
+    }
+}
+extension UIView {
+    func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while let nextResponder = responder?.next {
+            if let viewController = nextResponder as? UIViewController {
+                return viewController
+            }
+            responder = nextResponder
+        }
+        return nil
     }
 }
