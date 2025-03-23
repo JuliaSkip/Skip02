@@ -29,10 +29,9 @@ class PostView: UIView {
         if let index = loadedPosts.firstIndex(where: { $0 == post }) {
             loadedPosts.remove(at: index)
             post.isSaved = false
-           
         } else {
-            loadedPosts.append(post)
             post.isSaved = true
+            loadedPosts.append(post)
         }
                 
         do {

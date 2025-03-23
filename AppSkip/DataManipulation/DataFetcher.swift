@@ -95,7 +95,6 @@ class DataFetcher {
     }
     
     
-    
     func fetchPosts(subreddit:String, limit: Int, after: String?) async -> [PostData]? {
         
         do {
@@ -137,13 +136,13 @@ class DataFetcher {
         let data = try? Data(contentsOf: filePath) else { return [] }
             
         do {
-            return try JSONDecoder().decode([DataFetcher.PostData].self, from: data)
+            var results = try JSONDecoder().decode([DataFetcher.PostData].self, from: data)
+            return results
         } catch {
             print("Error decoding JSON: \(error)")
             return []
         }
     }
-    
     
     
     private func formatDate(_ date: Double) -> String {

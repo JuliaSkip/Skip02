@@ -16,23 +16,58 @@ class PostListViewController: UIViewController {
     }
     
     @IBOutlet private weak var postTable: UITableView!
+    @IBOutlet private weak var showSavedButton: UIButton!
     @IBOutlet private weak var subreddit: UILabel!
     
     private var posts:[DataFetcher.PostData] = []
     private var lastSelectedPost:DataFetcher.PostData?
     private var after: String?
-    private var isFetchingData = false
     private let portionSize: Int = 20
     private let subRedditText = "ios"
+    
+    private var isFetchingData = false
     private let dataFetcher = DataFetcher()
+    
+    private var isShowSaved: Bool = false
+    private var savedPosts:[DataFetcher.PostData] = []
+    @Published private var filteredPosts:[DataFetcher.PostData] = []
 
+    private lazy var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.searchResultsUpdater = self
+        controller.obscuresBackgroundDuringPresentation = false
+        controller.searchBar.placeholder = "Filter results"
+        return controller
+    }()
+
+    @IBAction func handleShowSaved(_ sender: UIButton) {
+        isShowSaved = !isShowSaved
         
+        let image = UIImage(systemName: isShowSaved ? "bookmark.fill" : "bookmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 15, weight: .bold))
+        self.showSavedButton.setImage(image, for: .normal)
+        self.showSavedButton.tintColor = .label
+        
+        if(isShowSaved){
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
+        }else{
+            navigationItem.searchController = nil
+        }
+        
+
+        self.postTable.reloadData()
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateSavedPost(_:)), name: NSNotification.Name("PostUpdated"), object: nil)
-
         fetchData()
+        self.savedPosts = dataFetcher.loadPosts()
+        self.filteredPosts = self.savedPosts
+        navigationItem.searchController = nil
+        
         subreddit.text = "/r/\(subRedditText)"
     }
     
@@ -40,10 +75,14 @@ class PostListViewController: UIViewController {
     func updateSavedPost(_ notification: Notification) {
         guard let updatedPost = notification.userInfo?["post"] as? DataFetcher.PostData else { return }
         
-        if let index = posts.firstIndex(where: { $0.url == updatedPost.url }) {
-            posts[index].isSaved = updatedPost.isSaved
-            postTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-        }
+        if let index = filteredPosts.firstIndex(where: { $0.url == updatedPost.url }) {
+            filteredPosts[index].isSaved = updatedPost.isSaved
+                postTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            }
+            if let index = posts.firstIndex(where: { $0.url == updatedPost.url }) {
+                posts[index].isSaved = updatedPost.isSaved
+                postTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            }
     }
 
     
@@ -97,13 +136,23 @@ class PostListViewController: UIViewController {
 extension PostListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(isShowSaved){
+            return self.filteredPosts.count
+        }
         return self.posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Const.cellReuseIdentifier, for: indexPath) as! PostCell
-        let currentPost = self.posts[indexPath.row]
-        cell.config(with: currentPost)
+        var currentPost:DataFetcher.PostData?
+        
+        if (isShowSaved){
+            currentPost = self.filteredPosts[indexPath.row]
+        }else{
+            currentPost = self.posts[indexPath.row]
+        }
+        
+        cell.config(with: currentPost!)
         
         return cell
     }
@@ -112,7 +161,11 @@ extension PostListViewController: UITableViewDataSource {
 
 extension PostListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.lastSelectedPost = self.posts[indexPath.row]
+        if (isShowSaved){
+            self.lastSelectedPost = self.filteredPosts[indexPath.row]
+        }else{
+            self.lastSelectedPost = self.posts[indexPath.row]
+        }
         self.performSegue(withIdentifier: Const.goToPostDetailsIdentifier, sender: nil)
     }
     
@@ -124,8 +177,21 @@ extension PostListViewController: UITableViewDelegate {
         let contentSize = scrollView.contentSize.height - 1500
         let bottom = offset + frameHeight
         
-        if bottom >= contentSize {
+        if bottom >= contentSize && !isShowSaved {
             fetchData()
         }
+    }
+}
+
+extension PostListViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let query = searchController.searchBar.text,
+              !query.isEmpty else {
+            self.filteredPosts = self.savedPosts
+            self.postTable.reloadData()
+            return
+        }
+        self.filteredPosts = self.savedPosts.filter { $0.title.lowercased().contains(query.lowercased()) }
+        self.postTable.reloadData()
     }
 }

@@ -236,6 +236,9 @@
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="bookmark" catalog="system"/>
+                                <connections>
+                                    <action selector="handleShowSaved:" destination="dkn-Et-GGg" eventType="touchUpInside" id="Z6U-Vg-PC5"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="/r/iOS" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SQj-fp-0dQ">
                                 <rect key="frame" x="174.66666666666666" y="103" width="44" height="50"/>
@@ -264,12 +267,13 @@
                     <navigationItem key="navigationItem" id="5Ay-bi-T26"/>
                     <connections>
                         <outlet property="postTable" destination="ydT-uN-Bvi" id="DeK-BZ-dJh"/>
+                        <outlet property="showSavedButton" destination="C8d-Tr-e5y" id="sKM-2b-eVl"/>
                         <outlet property="subreddit" destination="SQj-fp-0dQ" id="qqT-M4-Fu8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xw6-LL-3hw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="836" y="3"/>
+            <point key="canvasLocation" x="835.87786259541986" y="2.8169014084507045"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="iTu-Qp-bmJ">
@@ -334,7 +338,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
