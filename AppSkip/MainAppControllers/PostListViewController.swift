@@ -48,9 +48,13 @@ class PostListViewController: UIViewController {
         self.showSavedButton.tintColor = .label
         
         if(isShowSaved){
+            self.savedPosts = dataFetcher.loadPosts()
+            self.filteredPosts = self.savedPosts
             navigationItem.searchController = searchController
             navigationItem.hidesSearchBarWhenScrolling = false
         }else{
+            self.savedPosts.removeAll()
+            self.filteredPosts.removeAll()
             navigationItem.searchController = nil
         }
         
@@ -64,8 +68,6 @@ class PostListViewController: UIViewController {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateSavedPost(_:)), name: NSNotification.Name("PostUpdated"), object: nil)
         fetchData()
-        self.savedPosts = dataFetcher.loadPosts()
-        self.filteredPosts = self.savedPosts
         navigationItem.searchController = nil
         
         subreddit.text = "/r/\(subRedditText)"
