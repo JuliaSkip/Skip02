@@ -19,9 +19,13 @@ class PostView: UIView {
     private let fileName = "posts.json"
     private let dataFetcher = DataFetcher()
 
-    
+    @IBOutlet weak var saveMarkView: SaveMarkView!
     
     @IBAction func saveButton(_ sender: UIButton) {
+        handleSave()
+    }
+    
+    func handleSave () {
         guard var post = self.currentPost else { return }
         
         var loadedPosts = dataFetcher.loadPosts()
@@ -49,7 +53,6 @@ class PostView: UIView {
         } catch {
             print("Error saving JSON: \(error)")
         }
-
     }
     
     @IBAction func shareButton(_ sender: UIButton) {
@@ -72,6 +75,25 @@ class PostView: UIView {
     func commonInit() {
         Bundle.main.loadNibNamed(Const.contentXibName, owner: self, options: nil)
         postView.fixInView(self)
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
+        tapRecognizer.numberOfTapsRequired = 2
+        self.postImage.isUserInteractionEnabled = true
+        self.postImage.addGestureRecognizer(tapRecognizer)
+    }
+    
+    @objc func doubleTap() {
+        handleSave()
+        self.saveMarkView.isHidden = false
+        self.saveMarkView.alpha = 1
+        
+        UIView.animate(withDuration: 1, animations: {
+            self.saveMarkView.alpha = 0
+        }) { done in
+            if done {
+                self.saveMarkView.isHidden = true
+            }
+        }
     }
     
     func prepare(){
@@ -80,6 +102,7 @@ class PostView: UIView {
     
     func config(result: DataFetcher.PostData) {
         
+        self.saveMarkView.isHidden = true
         self.currentPost = result
                         
         if let imageUrlString = result.imageUrl, let formattedUrl = URL(string: imageUrlString.replacingOccurrences(of: "&amp;", with: "&")) {
